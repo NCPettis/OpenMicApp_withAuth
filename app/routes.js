@@ -4,6 +4,7 @@ module.exports = function(app, passport, db) {
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
+      console.log("hello world")
         res.render('index.ejs');
     });
 
@@ -29,7 +30,7 @@ module.exports = function(app, passport, db) {
 // message board routes ===============================================================
 
     app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+      db.collection('messages').save({club: req.body.club, address: req.body.address, mic: req.body.mic, days: req.body.days, thumbUp: 0, thumbDown:0}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -56,6 +57,18 @@ module.exports = function(app, passport, db) {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })
+    })
+
+    const {ObjectId} = require('mongodb')
+    app.post('/submit-review', (req, res) =>{
+      db.collection('messages').findOneAndUpdate(
+        {_id: new ObjectId(req.body.id)},
+        {$inc: {ratingTotal: Number(req.body.rating), ratingCount: 1}},
+        (err, result) => {
+          if (err) return console.log(err);
+          res.redirect('/profile')
+        }
+      )
     })
 
 // =============================================================================
@@ -98,7 +111,7 @@ module.exports = function(app, passport, db) {
 
     // local -----------------------------------
     app.get('/unlink/local', isLoggedIn, function(req, res) {
-        var user            = req.user;
+        let user            = req.user;
         user.local.email    = undefined;
         user.local.password = undefined;
         user.save(function(err) {

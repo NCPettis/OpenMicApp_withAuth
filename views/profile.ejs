@@ -1,68 +1,106 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>21 Savage Fan Site</title>
+    <title>Open Mic Night</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+<body>
+    <div class="container">
+
+        <div class="page-header text-center">
+            <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <h2>Add A Club</h2>
+                <% if (user.local.email) { %>
+                    <form action="/messages" method="POST">
+                        <!-- <input type="text" value="<%= user.local.email %>" name="name"> -->
+                        <input type="text" placeholder="Club Name" name="club">
+                        <input type="text" placeholder="Address" name="address">
+                        <input type="text" placeholder="Open Mic Name" name="mic">
+                        <p>What nights for this mic?</p>
+                        <input type="checkbox" id="Mon" name="days" value="Mon" />
+                        <label for="Mon">Monday</label>
+                        <input type="checkbox" id="Tues" name="days" value="Tues" />
+                        <label for="Tues">Tuesday</label>
+                        <input type="checkbox" id="Wed" name="days" value="Wed" />
+                        <label for="Wed">Wednesday</label>
+                        <input type="checkbox" id="Thurs" name="days" value="Thurs" />
+                        <label for="Thurs">Thursday</label>
+                        <input type="checkbox" id="Fri" name="days" value="Fri" />
+                        <label for="Fri">Friday</label>
+                        <input type="checkbox" id="Sat" name="days" value="Sat" />
+                        <label for="Sat">Saturday</label>
+                        <input type="checkbox" id="Sun" name="days" value="Sun" />
+                        <label for="Sun">Sunday</label>
+                        <button type="submit">Submit</button>
+                    </form>
+            </div>
+            <% } %>
+        </div>
+        <div class="col-sm-6">
+            <h3>Open Mics - Philly</h3>
+
+            <section class="messages">
+                <% for(var i=0; i<messages.length; i++) {%>
+                    <div class="message">
+                        <h4>
+                            <%= messages[i].club %>
+                        </h4>
+                        <p>
+                            <%= messages[i].address %>
+                        </p>
+                        <h4>
+                            <%= messages[i].mic %>
+                        </h4>
+                        <p>
+                            <%= messages[i].days %>
+                        </p>
+                        <span>
+                            <%= messages[i].ratingCount ? (messages[i].ratingTotal / messages[i].ratingCount).toFixed(1)
+                                : "No reviews" %>
+                        </span>
+                        <span>
+                            <%= messages[i].thumbUp %>
+                        </span>
+                        <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+
+                        <form action="/submit-review" method="POST">
+                            <input type="hidden" name="id" value="<%= messages[i]._id %>">
+                            <div class="rating-group">
+                                <input type="radio" id="star5-<%= i %>" name="rating" value="5" required>
+                                <label for="star5-<%= i %>" title="5 stars">★</label>
+                                <input type="radio" id="star4-<%= i %>" name="rating" value="4">
+                                <label for="star4-<%= i %>" title="4 stars">★</label>
+                                <input type="radio" id="star3-<%= i %>" name="rating" value="3">
+                                <label for="star3-<%= i %>" title="3 stars">★</label>
+                                <input type="radio" id="star2-<%= i %>" name="rating" value="2">
+                                <label for="star2-<%= i %>" title="2 stars">★</label>
+                                <input type="radio" id="star1-<%= i %>" name="rating" value="1">
+                                <label for="star1-<%= i %>" title="1 star">★</label>
+                            </div>
+                            <button type="submit">Rate</button>
+                        </form>
+                    </div>
+                    <% } %>
+            </section>
+
+        </div>
+
     </div>
 
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                <% if (user.local.email) { %>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                <% } %>
-
-            </div>
-        </div>
-        <div class="col-sm-6">
-          <h3>Messages</h3>
-          <ul class="messages">
-          <% for(var i=0; i<messages.length; i++) {%>
-            <li class="message">
-              <span><%= messages[i].name %></span>
-              <span><%= messages[i].msg %></span>
-              <span><%= messages[i].thumbUp %></span>
-              <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-              <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-            </li>
-          <% } %>
-          </ul>
-
-          <h2>Add a message</h2>
-        <% if (user.local.email) { %>
-          <form action="/messages" method="POST">
-            <input type="text" value="<%= user.local.email %>" name="name">
-            <input type="text" placeholder="message" name="msg">
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-        <% } %>
-
-</div>
-
-<script src="main.js"></script>
+    <script src="main.js"></script>
 
 </body>
+
 </html>
