@@ -1,3 +1,19 @@
+# OpenMic App
+
+## Project Description
+
+Open Mic is a Fullstack CRUD app that allows comics in Philly to find out what open mics are happening in the city and rate them.
+
+### How It's Made:
+
+* HTML & CSS – Structure and styling
+* JavaScript – Front-end and back-end functionality
+* Node.js – Server-side JavaScript
+* Express.js – Routes and handling requests
+* MongoDB – Storing user accounts and saved pins
+* EJS – Displaying dynamic content
+* Passport.js – User authentication
+
 ## Installation
 
 1. Clone repo
@@ -5,9 +21,15 @@
 
 ## Usage
 
-1. run `node server.js`
-2. Navigate to `localhost:6000`
+1. run `npm run dev`
+2. Navigate to `localhost:9000`
 
-## Credit
+## Screenshots and Demo
 
-Modified from Scotch.io's auth tutorial
+
+### Application Interface
+
+![Application interface](OpenMicScreenshot.png)
+![Application interface](OpenMicScreenshot(2).png)
+
+

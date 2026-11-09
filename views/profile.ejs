@@ -3,8 +3,9 @@
 
 <head>
     <title>Open Mic Night</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -68,12 +69,12 @@
                             <%= messages[i].ratingCount ? (messages[i].ratingTotal / messages[i].ratingCount).toFixed(1)
                                 : "No reviews" %>
                         </span>
-                        <span>
+                        <!-- <span>
                             <%= messages[i].thumbUp %>
                         </span>
                         <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-                        <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-                        <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span> -->
+                        <span style="color:red; font-size:24">DELETE<i class="fa fa-trash" aria-hidden="true"></i></span>
 
                         <form action="/submit-review" method="POST">
                             <input type="hidden" name="id" value="<%= messages[i]._id %>">
